@@ -1,0 +1,47 @@
+{
+  "_comment": "Universal REST v1.0.0 — Settings File. Every option the library supports is listed here with its default value. Delete any key you don't need; the built-in default will be used instead. Load this file in Lua with: rest.load_settings('universal_rest_settings.json')",
+
+  "_doc_timeout": "Request timeout in milliseconds. Applies to both connect and read phases. Increase for slow networks or large payloads. Can be overridden per-request with opts.timeout_ms.",
+  "timeout": 5000,
+
+  "_doc_retries": "How many times a failed request is retried before giving up. Each retry cycles through all servers in the server list. Set to 1 for no retries. Can be overridden per-request with opts.retries.",
+  "retries": 2,
+
+  "_doc_backoff_base": "Base delay (ms) before retrying. Combined with backoff_factor for exponential growth: delay = backoff_base * (backoff_factor ^ (attempt - 1)). Example: base=200, factor=2 → delays of 200ms, 400ms, 800ms.",
+  "backoff_base": 200,
+
+  "_doc_backoff_factor": "Multiplier for exponential backoff between retries. Higher values space retries further apart. Set to 1 for constant delays.",
+  "backoff_factor": 2,
+
+  "_doc_jitter": "When true, adds a random amount (0 to backoff_base ms) to each retry delay. Prevents multiple clients from retrying in sync (thundering herd). Recommended to keep enabled.",
+  "jitter": true,
+
+  "_doc_user_agent": "The User-Agent header sent with every request. Can be overridden per-request via opts.headers['User-Agent'].",
+  "user_agent": "universal_rest/1.0.0",
+
+  "_doc_log_level": "Controls how much the library logs. Levels from most to least verbose: 'debug' (everything), 'info' (normal operations), 'warn' (potential issues), 'error' (failures only), 'none' (silent). Logs go to the logger function.",
+  "log_level": "info",
+
+  "_doc_cache_enabled": "When true, GET requests with a cache_ttl option will have their responses cached in memory. Subsequent identical requests return the cached copy until the TTL expires.",
+  "cache_enabled": true,
+
+  "_doc_cache_max_items": "Maximum number of responses kept in the cache. When full, the least-recently-accessed entry is evicted (LRU). Set lower on memory-constrained systems (IoT, embedded).",
+  "cache_max_items": 1000,
+
+  "_doc_prefer_localhost": "When true and multiple servers are configured, localhost / 127.0.0.1 entries are tried first. Useful for local development or when a local proxy/cache sits in front of the remote API.",
+  "prefer_localhost": true,
+
+  "_doc_retry_on_status": "List of HTTP status codes that trigger an automatic retry. 429 (Too Many Requests) and common server errors (500-504) are included by default. Remove 429 if you handle rate-limit responses yourself.",
+  "retry_on_status": [500, 502, 503, 504, 429],
+
+  "_doc_servers": "Ordered list of base URLs for multi-server failover. When you call rest.get('/path'), the library prepends each server URL and tries them in order. Leave empty if you always pass full URLs.",
+  "servers": [],
+
+  "_doc_rate_limits": "Per-host token-bucket rate limiting. Each key is a hostname, value is an object with 'capacity' (max burst tokens) and 'refill_per_sec' (tokens added per second). Example: {\"api.example.com\": {\"capacity\": 10, \"refill_per_sec\": 2}} allows 10 burst requests, then 2/sec sustained.",
+  "rate_limits": {},
+
+  "_doc_websocket": "WebSocket configuration. Set enabled=false to disable WebSocket support entirely (saves memory if unused). The library auto-detects available WebSocket libraries.",
+  "websocket": {
+    "enabled": true
+  }
+}
